@@ -6,7 +6,7 @@ The **Job Portal & Application Management System** is a web-based recruitment pl
 
 The system allows recruiters to post job vacancies, candidates to create accounts and apply for jobs, and recruiters to manage applications on a job-wise basis. The platform also provides automated email notifications whenever an application's status changes.
 
-The project is planned, scheduled, and monitored using **Microsoft Project**, including task duration, dependencies, resources, milestones, and budget estimation.
+The project is planned and monitored using **Microsoft Project**, including Work Breakdown Structure (WBS), task duration, dependencies, resources, milestones, Gantt chart, and budget estimation.
 
 ---
 
@@ -49,33 +49,32 @@ Candidates will be able to:
 - Track application status.
 - Receive email notifications.
 
-### Recruiter
+### Client / Recruiter
 
-Recruiters will be able to:
+Clients or recruiters will be able to:
 
-- Register and log in.
-- Create and manage recruiter profiles.
-- Create job vacancies.
-- Edit and delete job postings.
+- Access the recruitment system.
+- Create and manage job postings.
 - View applicants for each job.
 - Search and filter candidates.
 - Review candidate profiles.
-- Download candidate resumes.
+- Access candidate resumes.
+- Manage candidate applications.
 - Update application status.
-- Share candidate information with clients.
+- Share suitable candidate information.
+- Track recruitment activities.
 
 ### Administrator
 
 Administrators will be able to:
 
 - Manage candidates.
-- Manage recruiters.
-- Manage clients.
+- Manage clients and recruiters.
 - Manage job postings.
 - Manage applications.
 - Monitor application activity.
 - View reports.
-- Manage system data.
+- Manage platform data.
 
 ---
 
@@ -84,30 +83,31 @@ Administrators will be able to:
 The application will use predefined statuses to track candidates throughout the recruitment process.
 
 ```text
-                    Candidate Applies
-                           |
-                           ↓
-                 Application Submitted
-                           |
-                           ↓
-                    Recruiter Review
-                           |
-             ┌─────────────┼─────────────┐
-             ↓             ↓             ↓
-         In Review      On Hold       Declined
-             |
-             ↓
-         Shortlisted
-             |
-             ↓
-          Selected
+Candidate Applies
+       |
+       v
+Application Submitted
+       |
+       v
+Recruiter Review
+       |
+       +----------------+----------------+
+       |                |                |
+       v                v                v
+   In Review         On Hold          Declined
+       |
+       v
+   Shortlisted
+       |
+       v
+    Selected
 ```
 
 ## Application Statuses
 
 | Status | Description |
 |---|---|
-| Submitted | Application has been successfully submitted |
+| Submitted / Successful | Application has been successfully submitted |
 | In Review | Recruiter is currently reviewing the application |
 | On Hold / Pending | Application is temporarily placed on hold |
 | Shortlisted | Candidate has been shortlisted |
@@ -122,7 +122,7 @@ Every important status change will be recorded and the candidate will receive an
 
 The system will send automated emails to candidates based on application status.
 
-### Application Submitted
+### Successful
 
 **Subject:** Application Submitted Successfully
 
@@ -134,17 +134,11 @@ The candidate receives confirmation that the application has been successfully s
 
 The candidate is informed that the recruiter is reviewing the application.
 
-### On Hold / Pending
+### On Hold
 
 **Subject:** Application Status Update
 
 The candidate is informed that the application has temporarily been placed on hold.
-
-### Shortlisted / Selected
-
-**Subject:** Application Progress Update
-
-The candidate is informed that they have progressed to the next stage.
 
 ### Declined
 
@@ -159,7 +153,7 @@ The candidate is informed that the application was not selected.
 ## 4.1 Authentication Module
 
 - Candidate registration
-- Recruiter registration
+- Client/recruiter authentication
 - Login
 - Logout
 - Password management
@@ -220,20 +214,23 @@ Recruiters can update candidate status:
 
 ```text
 Submitted
-    ↓
+    |
+    v
 In Review
-    ↓
+    |
+    v
 Shortlisted
-    ↓
+    |
+    v
 Selected
 ```
 
 Alternative paths:
 
 ```text
-In Review → On Hold
-In Review → Declined
-On Hold → In Review
+In Review -> On Hold
+In Review -> Declined
+On Hold -> In Review
 ```
 
 ## 4.7 Client Management Module
@@ -263,12 +260,12 @@ The administrator dashboard may display:
 
 ```text
 Total Candidates
-Total Recruiters
 Total Clients
 Total Jobs
 Active Jobs
 Total Applications
 Applications In Review
+Applications On Hold
 Shortlisted Candidates
 Selected Candidates
 Declined Applications
@@ -279,42 +276,42 @@ Declined Applications
 # 5. Overall System Workflow
 
 ```text
-Recruiter
-    |
-    ↓
-Create Job
-    |
-    ↓
-Publish Job
-    |
-    ↓
+Client / Recruiter
+        |
+        v
+    Create Job
+        |
+        v
+    Publish Job
+        |
+        v
 Candidate Searches Job
-    |
-    ↓
-Candidate Applies
-    |
-    ↓
+        |
+        v
+ Candidate Applies
+        |
+        v
 Application Stored
-    |
-    ↓
+        |
+        v
 Recruiter Reviews Application
-    |
-    ↓
+        |
+        v
 Update Application Status
-    |
-    ↓
-Email Notification
-    |
-    ↓
+        |
+        v
+ Email Notification
+        |
+        v
 Candidate Receives Update
-    |
-    ↓
+        |
+        v
 Candidate Shortlisted
-    |
-    ↓
+        |
+        v
 Candidate Information Shared With Client
-    |
-    ↓
+        |
+        v
 Client Reviews Candidate
 ```
 
@@ -324,35 +321,32 @@ Client Reviews Candidate
 
 ## Main Entities
 
-```text
-User
-Candidate
-Recruiter
-Client
-Job
-Application
-Resume
-ApplicationStatus
-Notification
-EmailLog
-```
+- User
+- Candidate
+- Client
+- Job
+- Application
+- Resume
+- ApplicationStatus
+- Notification
+- EmailLog
 
 ## Basic Entity Relationship
 
 ```text
 User
  |
- ├──────── Candidate
+ +-------- Candidate
  |
- └──────── Recruiter
+ +-------- Client
               |
-              ↓
+              v
              Job
               |
-              ↓
+              v
         Application
               |
-              ↓
+              v
           Candidate
 ```
 
@@ -368,9 +362,9 @@ The project will require the following resources:
 |---|---|
 | Project Manager | Planning, scheduling, monitoring, and coordination |
 | UI/UX Designer | User interface and user experience design |
-| Frontend Developer | Candidate, recruiter, and admin interfaces |
+| Frontend Developer | Candidate, client, and admin interfaces |
 | Backend Developer | APIs, authentication, and business logic |
-| Database Developer | Database design and management |
+| Database Designer | Database design and management |
 | QA Tester | Testing and quality assurance |
 | DevOps Engineer | Deployment and server configuration |
 
@@ -428,7 +422,7 @@ For a student project, one team member may perform multiple roles.
 
 # 9. Project Timeline
 
-The project schedule shown below follows the **Microsoft Project schedule** prepared for this project.
+The project schedule follows the **Microsoft Project schedule** shown in the project Gantt chart.
 
 **Project Start:** 04 September 2026  
 **Project Finish:** 18 December 2026
@@ -437,7 +431,7 @@ The project schedule shown below follows the **Microsoft Project schedule** prep
 
 | Phase | Duration | Start | Finish | Predecessor | Resource |
 |---|---:|---|---|---:|---|
-| Project Planning | 5 days | 04-Sep-2026 | 10-Sep-2026 | — | Project Manager |
+| Project Planning | 5 days | 04-Sep-2026 | 10-Sep-2026 | - | Project Manager |
 | Requirement Analysis | 13 days | 11-Sep-2026 | 29-Sep-2026 | 1 | Project Manager |
 | UI/UX | 7 days | 30-Sep-2026 | 08-Oct-2026 | 5 | UI/UX Designer |
 | Database Design | 10 days | 09-Oct-2026 | 22-Oct-2026 | 13 | Database Designer |
@@ -446,155 +440,218 @@ The project schedule shown below follows the **Microsoft Project schedule** prep
 | Email Notification | 4 days | 04-Dec-2026 | 09-Dec-2026 | 36 | Backend Developer |
 | Testing | 7 days | 10-Dec-2026 | 18-Dec-2026 | 53 | Tester |
 
-> **Note:** The predecessor numbers above correspond to the detailed task IDs in the Microsoft Project WBS, not necessarily the visible summary-task numbers.
-
-## 9.2 Detailed WBS
-
-### 1. Project Planning
-
-- Define project scope
-- Define objectives
-- Identify stakeholders
-- Identify resources
-- Prepare project plan
-
-**Duration:** 5 days  
-**Start:** 04-Sep-2026  
-**Finish:** 10-Sep-2026
-
-### 2. Requirement Analysis
-
-- Candidate requirements
-- Recruiter requirements
-- Client requirements
-- Admin requirements
-- Functional requirements
-- Non-functional requirements
-- Requirement approval
-
-**Duration:** 13 days  
-**Start:** 11-Sep-2026  
-**Finish:** 29-Sep-2026
-
-### 3. UI/UX
-
-- User flow
-- Wireframes
-- Candidate interface
-- Recruiter interface
-- Admin dashboard
-- Job listing interface
-- Application interface
-- Responsive design
-
-**Duration:** 7 days  
-**Start:** 30-Sep-2026  
-**Finish:** 08-Oct-2026
-
-### 4. Database Design
-
-- Identify entities
-- Create ER diagram
-- Define relationships
-- Create database schema
-- Implement database structure
-
-**Duration:** 10 days  
-**Start:** 09-Oct-2026  
-**Finish:** 22-Oct-2026
-
-### 5. Backend Development
-
-- Backend setup
-- Database connection
-- Authentication
-- Candidate APIs
-- Recruiter APIs
-- Client APIs
-- Job APIs
-- Application APIs
-- Application status management
-- Notification APIs
-- Email integration
-- Resume handling
-- Candidate sharing
-- Admin APIs
-
-**Duration:** 15 days  
-**Start:** 23-Oct-2026  
-**Finish:** 12-Nov-2026
-
-### 6. Frontend Development
-
-#### Candidate Portal
-
-- Registration
-- Login
-- Dashboard
-- Profile
-- Resume
-- Job listing
-- Job search
-- Job details
-- Apply
-- Application tracking
-
-#### Recruiter Portal
-
-- Dashboard
-- Job posting
-- Job management
-- Applicant management
-- Candidate filtering
-- Status management
-- Client management
-- Candidate sharing
-
-#### Admin Portal
-
-- Dashboard
-- User management
-- Job management
-- Application management
-- Reports
-
-**Duration:** 15 days  
-**Start:** 13-Nov-2026  
-**Finish:** 03-Dec-2026
-
-### 7. Email Notification
-
-- Configure email service
-- Application confirmation email
-- In-review email
-- On-hold email
-- Shortlisted/selected email
-- Declined email
-- Test email delivery
-
-**Duration:** 4 days  
-**Start:** 04-Dec-2026  
-**Finish:** 09-Dec-2026
-
-### 8. Testing
-
-- Unit testing
-- Integration testing
-- API testing
-- System testing
-- UI testing
-- Security testing
-- Responsive testing
-- Email testing
-- Bug fixing
-
-**Duration:** 7 days  
-**Start:** 10-Dec-2026  
-**Finish:** 18-Dec-2026
+> **Note:** The predecessor values correspond to the detailed task IDs in the Microsoft Project WBS.
 
 ---
 
-# 10. Project Milestones
+# 10. Detailed Work Breakdown Structure (WBS)
+
+## 1. Project Planning
+
+**Duration:** 5 days  
+**Start:** 04-Sep-2026  
+**Finish:** 10-Sep-2026  
+**Resource:** Project Manager
+
+Tasks:
+
+- Define project scope
+- Define objective
+- Prepare project plan
+
+---
+
+## 2. Requirement Analysis
+
+**Duration:** 13 days  
+**Start:** 11-Sep-2026  
+**Finish:** 29-Sep-2026  
+**Resource:** Project Manager
+
+Tasks:
+
+- Candidate requirement
+- Client requirement
+- Application workflow
+- Email notification requirements
+- Database design requirements
+- Functional requirement
+- Non-functional requirement
+
+---
+
+## 3. UI/UX
+
+**Duration:** 7 days  
+**Start:** 30-Sep-2026  
+**Finish:** 08-Oct-2026  
+**Resource:** UI/UX Designer
+
+Tasks:
+
+- User flow
+- Candidate wireframe
+- Client wireframe
+- Job list
+- Job details
+- Application page
+- Application tracking
+
+---
+
+## 4. Database Design
+
+**Duration:** 10 days  
+**Start:** 09-Oct-2026  
+**Finish:** 22-Oct-2026  
+**Resource:** Database Designer
+
+Tasks:
+
+- Candidate database
+- Client database
+- Job database
+- Application database
+- Application status
+- Notification database
+
+---
+
+## 5. Backend Development
+
+**Duration:** 15 days  
+**Start:** 23-Oct-2026  
+**Finish:** 12-Nov-2026  
+**Resource:** Backend Developer
+
+Tasks:
+
+- Authentication
+- Candidate API
+- Client API
+- Job API
+- Application API
+- Notification API
+- API testing
+
+### Backend Task Schedule
+
+| Task | Duration | Start | Finish | Predecessor |
+|---|---:|---|---|---:|
+| Authentication | 2 days | 23-Oct-2026 | 26-Oct-2026 | 21 |
+| Candidate API | 5 days | 27-Oct-2026 | 02-Nov-2026 | 29 |
+| Client API | 4 days | 27-Oct-2026 | 30-Oct-2026 | 29 |
+| Job API | 2 days | 03-Nov-2026 | 04-Nov-2026 | 30,31 |
+| Application API | 1 day | 05-Nov-2026 | 05-Nov-2026 | 32 |
+| Notification | 3 days | 06-Nov-2026 | 10-Nov-2026 | 33 |
+| API Testing | 2 days | 11-Nov-2026 | 12-Nov-2026 | 34 |
+
+---
+
+## 6. Frontend Development
+
+**Duration:** 15 days  
+**Start:** 13-Nov-2026  
+**Finish:** 03-Dec-2026  
+**Resource:** Frontend Developer
+
+### Candidate Module
+
+- Registration
+- Login
+- Profile
+- Resume
+- Job Listing
+- Job Search
+- Application for Apply
+- Application History
+- Notification
+
+### Client Module
+
+- Dashboard
+- Post Job
+- Manage Job
+- Candidate Filtering
+- Update Candidate Status
+
+### Frontend Task Schedule
+
+| Task | Duration | Start | Finish | Predecessor |
+|---|---:|---|---|---:|
+| Registration | 1 day | 13-Nov-2026 | 13-Nov-2026 | 37 |
+| Login | 1 day | 16-Nov-2026 | 16-Nov-2026 | 38 |
+| Profile | 3 days | 17-Nov-2026 | 19-Nov-2026 | 39 |
+| Resume | 2 days | 20-Nov-2026 | 23-Nov-2026 | 40 |
+| Job Listing | 1 day | 24-Nov-2026 | 24-Nov-2026 | 41 |
+| Job Search | 1 day | 24-Nov-2026 | 24-Nov-2026 | 41 |
+| Application for Apply | 2 days | 25-Nov-2026 | 26-Nov-2026 | 42,43 |
+| Application History | 2 days | 27-Nov-2026 | 30-Nov-2026 | 44 |
+| Notification | 3 days | 01-Dec-2026 | 03-Dec-2026 | 45 |
+
+### Client Module
+
+| Task | Duration | Start | Finish | Predecessor |
+|---|---:|---|---|---:|
+| Dashboard | 3 days | 13-Nov-2026 | 17-Nov-2026 | 36 |
+| Post Job | 2 days | 18-Nov-2026 | 19-Nov-2026 | 48 |
+| Manage Job | 2 days | 20-Nov-2026 | 23-Nov-2026 | 49 |
+| Candidate Filtering | 1 day | 24-Nov-2026 | 24-Nov-2026 | 50 |
+| Update Candidate Status | 2 days | 25-Nov-2026 | 26-Nov-2026 | 51 |
+
+---
+
+## 7. Email Notification
+
+**Duration:** 4 days  
+**Start:** 04-Dec-2026  
+**Finish:** 09-Dec-2026  
+**Resource:** Backend Developer
+
+Tasks:
+
+- Successful application notification
+- In-review notification
+- On-hold notification
+- Declined notification
+
+### Email Task Schedule
+
+| Task | Duration | Start | Finish | Predecessor |
+|---|---:|---|---|---:|
+| Successful | 1 day | 04-Dec-2026 | 04-Dec-2026 | 36 |
+| In-Review | 1 day | 07-Dec-2026 | 07-Dec-2026 | 54 |
+| On-Hold | 1 day | 08-Dec-2026 | 08-Dec-2026 | 55 |
+| Declined | 1 day | 09-Dec-2026 | 09-Dec-2026 | 56 |
+
+---
+
+## 8. Testing
+
+**Duration:** 7 days  
+**Start:** 10-Dec-2026  
+**Finish:** 18-Dec-2026  
+**Resource:** Tester
+
+Tasks:
+
+- Unit Testing
+- Security Testing
+- Integration Testing
+- Email Testing
+
+### Testing Task Schedule
+
+| Task | Duration | Start | Finish | Predecessor |
+|---|---:|---|---|---:|
+| Unit Testing | 2 days | 10-Dec-2026 | 11-Dec-2026 | 58 |
+| Security Testing | 2 days | 14-Dec-2026 | 15-Dec-2026 | 59 |
+| Integration Testing | 1 day | 16-Dec-2026 | 16-Dec-2026 | 60 |
+| Email Testing | 2 days | 17-Dec-2026 | 18-Dec-2026 | 61 |
+
+---
+
+# 11. Project Milestones
 
 | Milestone | Target Date |
 |---|---|
@@ -606,15 +663,13 @@ The project schedule shown below follows the **Microsoft Project schedule** prep
 | Frontend Completed | 03-Dec-2026 |
 | Email Notification Completed | 09-Dec-2026 |
 | Testing Completed | 18-Dec-2026 |
-| **Project Completed** | **18-Dec-2026** |
+| Project Completed | 18-Dec-2026 |
 
 ---
 
-# 11. Project Budget
+# 12. Project Budget
 
-The following is the estimated project budget used for project planning.
-
-## 11.1 Human Resource Cost
+## 12.1 Human Resource Cost
 
 | Resource | Daily Rate | Estimated Days | Cost |
 |---|---:|---:|---:|
@@ -626,7 +681,7 @@ The following is the estimated project budget used for project planning.
 | DevOps Engineer | ₹800 | 5 | ₹4,000 |
 | **Total Labour Cost** | | | **₹97,500** |
 
-## 11.2 Other Project Costs
+## 12.2 Other Project Costs
 
 | Item | Estimated Cost |
 |---|---:|
@@ -638,7 +693,7 @@ The following is the estimated project budget used for project planning.
 | Miscellaneous | ₹3,000 |
 | **Total Other Costs** | **₹15,000** |
 
-## 11.3 Total Estimated Budget
+## 12.3 Total Estimated Budget
 
 ```text
 Human Resource Cost       ₹97,500
@@ -655,34 +710,34 @@ Total Estimated Budget    ₹1,23,750
 
 ---
 
-# 12. Project Deliverables
+# 13. Project Deliverables
 
 The project will produce the following deliverables:
 
-1. Project proposal
-2. Requirement specification
-3. Microsoft Project schedule
-4. Work Breakdown Structure (WBS)
-5. Gantt chart
-6. Resource sheet
-7. Budget estimation
-8. UI/UX designs
-9. Database design
-10. ER diagram
-11. System architecture
-12. Backend APIs
-13. Frontend application
-14. Email notification system
-15. Admin dashboard
-16. Testing documentation
-17. Deployment setup
-18. User documentation
-19. Final project report
-20. Final presentation
+- Project proposal
+- Requirement specification
+- Microsoft Project schedule
+- Work Breakdown Structure (WBS)
+- Gantt chart
+- Resource sheet
+- Budget estimation
+- UI/UX designs
+- Database design
+- ER diagram
+- System architecture
+- Backend APIs
+- Frontend application
+- Email notification system
+- Admin dashboard
+- Testing documentation
+- Deployment setup
+- User documentation
+- Final project report
+- Final presentation
 
 ---
 
-# 13. Risks and Mitigation
+# 14. Risks and Mitigation
 
 | Risk | Impact | Mitigation |
 |---|---|---|
@@ -698,26 +753,26 @@ The project will produce the following deliverables:
 
 ---
 
-# 14. Functional Requirements
+# 15. Functional Requirements
 
 The system should:
 
 - Allow users to register and authenticate.
 - Allow candidates to manage their profiles.
 - Allow candidates to upload resumes.
-- Allow recruiters to create and manage jobs.
+- Allow clients/recruiters to create and manage jobs.
 - Allow candidates to search for jobs.
 - Allow candidates to apply for jobs.
 - Store application information.
 - Allow recruiters to view candidates job-wise.
 - Allow recruiters to update application status.
 - Send automated email notifications.
-- Allow recruiters to share candidate information with clients.
+- Allow candidate information to be shared with clients.
 - Allow administrators to manage users, jobs, and applications.
 
 ---
 
-# 15. Non-Functional Requirements
+# 16. Non-Functional Requirements
 
 ## Performance
 
@@ -739,11 +794,11 @@ The system should remain available during normal service operation.
 
 ## Scalability
 
-The architecture should support an increasing number of candidates, jobs, recruiters, and applications.
+The architecture should support an increasing number of candidates, jobs, clients, and applications.
 
 ## Usability
 
-The interface should be simple and easy to understand for candidates and recruiters.
+The interface should be simple and easy to understand for candidates and clients/recruiters.
 
 ## Maintainability
 
@@ -751,7 +806,7 @@ The application should use modular architecture and maintainable code.
 
 ---
 
-# 16. Future Enhancements
+# 17. Future Enhancements
 
 Future versions may include:
 
@@ -772,19 +827,19 @@ Future versions may include:
 
 ---
 
-# 17. Success Criteria
+# 18. Success Criteria
 
 The project will be considered successful when:
 
 - Candidates can successfully create accounts.
 - Candidates can complete their profiles.
 - Candidates can upload resumes.
-- Recruiters can create and publish jobs.
+- Clients/recruiters can create and publish jobs.
 - Candidates can search and apply for jobs.
 - Recruiters can manage applications job-wise.
 - Recruiters can update application statuses.
 - Candidates receive appropriate email notifications.
-- Recruiters can share candidate information with clients.
+- Candidate information can be shared with clients.
 - Administrators can manage users, jobs, and applications.
 - The system passes functional and integration testing.
 - The application can be deployed successfully.
@@ -792,11 +847,11 @@ The project will be considered successful when:
 
 ---
 
-# 18. Microsoft Project Management
+# 19. Microsoft Project Management
 
 **Microsoft Project** will be used to plan and monitor the project.
 
-The project file will contain:
+The Microsoft Project file will contain:
 
 - Work Breakdown Structure (WBS)
 - Task duration
@@ -812,41 +867,47 @@ The project file will contain:
 - Progress tracking
 - Critical path
 
-### Project Schedule Summary
+## Project Schedule Summary
 
 ```text
 Project Start  : 04-Sep-2026
 Project Finish : 18-Dec-2026
 
-Major Phases:
-
 Planning
-   ↓
+   |
+   v
 Requirement Analysis
-   ↓
+   |
+   v
 UI/UX
-   ↓
+   |
+   v
 Database Design
-   ↓
+   |
+   v
 Backend Development
-   ↓
+   |
+   v
 Frontend Development
-   ↓
+   |
+   v
 Email Notification
-   ↓
+   |
+   v
 Testing
-   ↓
+   |
+   v
 Project Completion
 ```
 
 ---
 
-# 19. Conclusion
+# 20. Conclusion
 
 The **Job Portal & Application Management System** provides a centralized solution for managing the recruitment lifecycle from job posting to candidate selection.
 
 The platform connects **candidates, recruiters, and clients** while reducing manual recruitment activities through centralized application management and automated email notifications.
 
-The project will be managed using **Microsoft Project**, with a planned schedule from **04 September 2026 to 18 December 2026**. The project plan includes scope definition, resource allocation, task scheduling, dependencies, milestones, duration analysis, and budget estimation.
+The project is scheduled from **04 September 2026 to 18 December 2026** and is managed using **Microsoft Project**. The project plan includes scope definition, resource allocation, task scheduling, dependencies, milestones, duration analysis, Gantt chart, and budget estimation.
 
 The system can later be enhanced with AI-powered recruitment features such as resume screening, candidate-job matching, automated ranking, and intelligent recommendations.
