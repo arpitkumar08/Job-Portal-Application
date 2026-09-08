@@ -64,18 +64,6 @@ Clients or recruiters will be able to:
 - Share suitable candidate information.
 - Track recruitment activities.
 
-### Administrator
-
-Administrators will be able to:
-
-- Manage candidates.
-- Manage clients and recruiters.
-- Manage job postings.
-- Manage applications.
-- Monitor application activity.
-- View reports.
-- Manage platform data.
-
 ---
 
 # 2. Application Status Workflow
@@ -253,25 +241,6 @@ The notification system will manage:
 - Selection notifications
 - Decline notifications
 - Recruitment updates
-
-## 4.9 Admin Module
-
-The administrator dashboard may display:
-
-```text
-Total Candidates
-Total Clients
-Total Jobs
-Active Jobs
-Total Applications
-Applications In Review
-Applications On Hold
-Shortlisted Candidates
-Selected Candidates
-Declined Applications
-```
-
----
 
 # 5. Overall System Workflow
 
